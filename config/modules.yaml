@@ -1,0 +1,8 @@
+Lang: go
+Modules:
+#  Test:
+#    Url:
+#    AuthType: PublicKeys
+#    AuthConfig:
+#      PemFile:
+#      IgnoreHostKey: true
