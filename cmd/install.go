@@ -12,22 +12,21 @@ import (
 )
 
 var InstallCmd = &cli.Command{
-
 	Name:  "install",
 	Usage: "Install proto dependencies from config file ",
 	Flags: []cli.Flag{
 		&cli.StringFlag{
 			Name:        "config",
-			Value:       "modules.yaml",
+			Value:       "prot.yaml",
 			Aliases:     []string{"c"},
 			Usage:       "Load configuration from `FILE`",
-			DefaultText: "modules.yaml",
+			DefaultText: "prot.yaml",
 		},
 	},
 	Action: func(context *cli.Context) error {
 		filledConfig, err := config.NewConfig(context.String("config"))
 		if err != nil {
-			logrus.Fatal(err)
+			return err
 		}
 
 		generator := tools.NewGenerator()
