@@ -1,7 +1,9 @@
 package tools
 
 import (
+	"bytes"
 	"errors"
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -54,10 +56,16 @@ func (g *Generator) GenerateProto(modulePath string, lang string) ([]string, err
 	}
 
 	cmd := exec.Command("protoc", modulePath+"*.proto", supportLang.ProtocArg)
+	var out bytes.Buffer
+	var stderr bytes.Buffer
+	cmd.Stdout = &out
+	cmd.Stderr = &stderr
 	err := cmd.Run()
 	if err != nil {
 		return nil, err
 	}
+
+	fmt.Println("Result: " + out.String())
 
 	return g.findFilesInDirByExt(modulePath, supportLang.ProtocOutputExt), nil
 }
