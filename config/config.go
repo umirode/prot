@@ -34,7 +34,7 @@ func NewConfig(filePath string) (*Config, error) {
 
 	err = tools.ValidateYaml(configFileData, bytes.NewReader(schemaJsonAsset.bytes))
 	if err != nil {
-		//return nil, err
+		return nil, err
 	}
 
 	config := &Config{}
