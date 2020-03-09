@@ -56,16 +56,23 @@ func (g *Generator) GenerateProto(modulePath string, lang string) ([]string, err
 	}
 
 	cmd := exec.Command("protoc", modulePath+"*.proto", supportLang.ProtocArg)
+
+	//TODO: Debug
 	var out bytes.Buffer
 	var stderr bytes.Buffer
 	cmd.Stdout = &out
 	cmd.Stderr = &stderr
+	//TODO: Debug
+
 	err := cmd.Run()
 	if err != nil {
 		return nil, err
 	}
 
+	//TODO: Debug
 	fmt.Println("Result: " + out.String())
+	fmt.Println("Result: " + stderr.String())
+	//TODO: Debug
 
 	return g.findFilesInDirByExt(modulePath, supportLang.ProtocOutputExt), nil
 }
