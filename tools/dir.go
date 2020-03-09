@@ -1,25 +1,29 @@
 package tools
 
 import (
-	"log"
 	"os"
 )
 
-func CreateDirAndFormatPath(outputPath string) string {
+func CreateDirAndFormatPath(outputPath string, cleanDir bool) (string, error) {
 	if outputPath == "" {
-		return ""
+		return "", nil
 	}
 
 	if outputPath[len(outputPath)-1:] != "/" {
 		outputPath += "/"
 	}
 
-	_ = os.RemoveAll(outputPath)
+	if cleanDir {
+		err := os.RemoveAll(outputPath)
+		if err != nil {
+			return "", err
+		}
+	}
 
 	err := os.MkdirAll(outputPath, os.ModePerm)
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
 
-	return outputPath
+	return outputPath, nil
 }

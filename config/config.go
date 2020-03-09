@@ -7,16 +7,18 @@ import (
 	"io/ioutil"
 )
 
-//go:generate go-bindata -o prot.go templates
+//go:generate go-bindata -o prot.go -pkg config templates
 type Config struct {
 	Lang    string            `yaml:"Lang"`
 	Modules map[string]Module `yaml:"Modules"`
 }
 
 type Module struct {
-	Url        string             `yaml:"Url"`
-	AuthType   *string            `yaml:"AuthType"`
-	AuthConfig *map[string]string `yaml:"AuthConfig"`
+	Repository string `yaml:"Repository"`
+	Auth       *struct {
+		Type   string            `yaml:"Type"`
+		Config map[string]string `yaml:"Config"`
+	} `yaml:"Auth"`
 }
 
 func NewConfig(filePath string) (*Config, error) {

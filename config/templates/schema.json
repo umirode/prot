@@ -1,118 +1,95 @@
 {
+  "$schema": "http://json-schema.org/draft-07/schema",
   "type": "object",
-  "title": "The Root Schema",
-  "description": "The root schema is the schema that comprises the entire JSON document.",
-  "default": {},
   "required": [
-    "checked",
-    "dimensions",
-    "id",
-    "name",
-    "price",
-    "tags"
+    "Lang",
+    "Modules"
   ],
   "properties": {
-    "checked": {
-      "$id": "#/properties/checked",
-      "type": "boolean",
-      "title": "The Checked Schema",
-      "description": "An explanation about the purpose of this instance.",
-      "default": false,
-      "examples": [
-        false
-      ]
-    },
-    "dimensions": {
-      "$id": "#/properties/dimensions",
-      "type": "object",
-      "title": "The Dimensions Schema",
-      "description": "An explanation about the purpose of this instance.",
-      "default": {},
-      "examples": [
-        {
-          "height": 10.0,
-          "width": 5.0
-        }
-      ],
-      "required": [
-        "width",
-        "height"
-      ],
-      "properties": {
-        "width": {
-          "$id": "#/properties/dimensions/properties/width",
-          "type": "integer",
-          "title": "The Width Schema",
-          "description": "An explanation about the purpose of this instance.",
-          "default": 0,
-          "examples": [
-            5
-          ]
-        },
-        "height": {
-          "$id": "#/properties/dimensions/properties/height",
-          "type": "integer",
-          "title": "The Height Schema",
-          "description": "An explanation about the purpose of this instance.",
-          "default": 0,
-          "examples": [
-            10
-          ]
-        }
-      }
-    },
-    "id": {
-      "$id": "#/properties/id",
-      "type": "integer",
-      "title": "The Id Schema",
-      "description": "An explanation about the purpose of this instance.",
-      "default": 0,
-      "examples": [
-        1
-      ]
-    },
-    "name": {
-      "$id": "#/properties/name",
+    "Lang": {
+      "$id": "#/properties/Lang",
       "type": "string",
-      "title": "The Name Schema",
-      "description": "An explanation about the purpose of this instance.",
-      "default": "",
-      "examples": [
-        "A green door"
+      "enum": [
+        "go"
       ]
     },
-    "price": {
-      "$id": "#/properties/price",
-      "type": "number",
-      "title": "The Price Schema",
-      "description": "An explanation about the purpose of this instance.",
-      "default": 0,
-      "examples": [
-        12.5
-      ]
-    },
-    "tags": {
-      "$id": "#/properties/tags",
-      "type": "array",
-      "title": "The Tags Schema",
-      "description": "An explanation about the purpose of this instance.",
-      "default": [],
-      "examples": [
-        [
-          "home",
-          "green"
-        ]
-      ],
-      "items": {
-        "$id": "#/properties/tags/items",
-        "type": "string",
-        "title": "The Items Schema",
-        "description": "An explanation about the purpose of this instance.",
-        "default": "",
-        "examples": [
-          "home",
-          "green"
-        ]
+    "Modules": {
+      "$id": "#/properties/Modules",
+      "type": "object",
+      "default": {},
+      "propertyNames": {
+        "pattern": "(^[a-z]|[A-Z0-9])[a-z]*$"
+      },
+      "patternProperties": {
+        "(^[a-z]|[A-Z0-9])[a-z]*$": {
+          "$id": "#/properties/Modules/^[a-z_][a-z_]*$",
+          "type": "object",
+          "required": [
+            "Repository"
+          ],
+          "properties": {
+            "Repository": {
+              "$id": "#/properties/Modules/^[a-z_][a-z_]*$/Repository",
+              "type": "string"
+            },
+            "Auth": {
+              "$id": "#/properties/Modules/^[a-z_][a-z_]*$/Auth",
+              "type": "object",
+              "required": [
+                "Type",
+                "Config"
+              ],
+              "properties": {
+                "Type": {
+                  "$id": "#/properties/Modules/^[a-z_][a-z_]*$/Auth/Config",
+                  "type": "string",
+                  "enum": [
+                    "PublicKeys"
+                  ]
+                }
+              },
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "Type": {
+                        "const": "PublicKeys"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "Config": {
+                        "required": [
+                          "PemFile"
+                        ],
+                        "properties": {
+                          "PemFile": {
+                            "$id": "#/properties/Modules/^[a-z_][a-z_]*$/Auth/Config/PemFile",
+                            "type": "string"
+                          },
+                          "PemFilePassword": {
+                            "$id": "#/properties/Modules/^[a-z_][a-z_]*$/Auth/Config/PemFilePassword",
+                            "type": "string"
+                          },
+                          "User": {
+                            "$id": "#/properties/Modules/^[a-z_][a-z_]*$/Auth/Config/User",
+                            "type": "string",
+                            "default": "git"
+                          },
+                          "IgnoreHostKey": {
+                            "$id": "#/properties/Modules/^[a-z_][a-z_]*$/Auth/Config/IgnoreHostKey",
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
       }
     }
   }

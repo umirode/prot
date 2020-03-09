@@ -1,8 +1,11 @@
 Lang: go
 Modules:
-#  Test:
-#    Url:
-#    AuthType: PublicKeys
-#    AuthConfig:
-#      PemFile:
-#      IgnoreHostKey: true
+  ModuleName:
+    Repository: https://github.com/umirode/prot.git
+  ModuleNameWithAuth:
+    Repository: git@github.com:umirode/prot.git
+    Auth:
+      Type: PublicKeys
+      Config:
+        PemFile: id_rsa.pem
+        IgnoreHostKey: true

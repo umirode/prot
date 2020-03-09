@@ -22,6 +22,12 @@ var InstallCmd = &cli.Command{
 			Usage:       "Load configuration from `FILE`",
 			DefaultText: "prot.yaml",
 		},
+		&cli.StringFlag{
+			Name:        "output",
+			Aliases:     []string{"o"},
+			Usage:       "Output path `PATH`",
+			DefaultText: "current directory",
+		},
 	},
 	Action: func(context *cli.Context) error {
 		filledConfig, err := config.NewConfig(context.String("config"))
@@ -32,7 +38,20 @@ var InstallCmd = &cli.Command{
 		generator := tools.NewGenerator()
 		cloner := git.NewCloner()
 
-		vendorDir := tools.CreateDirAndFormatPath("prot_vendor")
+		outputPath, err := tools.CreateDirAndFormatPath(context.String("output"), false)
+		if err != nil {
+			return err
+		}
+
+		vendorDirPath := "prot_vendor"
+		if outputPath != "" {
+			vendorDirPath = outputPath + vendorDirPath
+		}
+
+		vendorDir, err := tools.CreateDirAndFormatPath(vendorDirPath, true)
+		if err != nil {
+			return err
+		}
 
 		wg := sync.WaitGroup{}
 
@@ -42,16 +61,16 @@ var InstallCmd = &cli.Command{
 				defer wg.Done()
 
 				var authMethod ssh.AuthMethod
-				if (module.AuthType != nil) && (module.AuthConfig != nil) {
+				if module.Auth != nil {
 					var err error
-					authMethod, err = git.GetAuthMethod(*module.AuthType, *module.AuthConfig)
+					authMethod, err = git.GetAuthMethod((*module.Auth).Type, (*module.Auth).Config)
 					if err != nil {
 						logrus.Error(err)
 					}
 				}
 
-				outputModuleDirectory := vendorDir + "proto_" + strings.ToLower(name) + "/"
-				err = cloner.Clone(outputModuleDirectory, module.Url, authMethod)
+				outputModuleDirectory := vendorDir + strings.ToLower(name) + "/"
+				err = cloner.Clone(outputModuleDirectory, module.Repository, authMethod)
 				if err != nil {
 					logrus.Error(err)
 				}
