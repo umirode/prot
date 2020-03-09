@@ -1,9 +1,9 @@
 package main
 
 import (
+	"github.com/sirupsen/logrus"
 	"github.com/umirode/prot/cmd"
 	"github.com/urfave/cli/v2"
-	"log"
 	"os"
 )
 
@@ -17,7 +17,7 @@ func main() {
 
 	err := app.Run(os.Args)
 	if err != nil {
-		log.Fatal(err)
+		logrus.Fatal(err)
 	}
 
 	os.Exit(0)
