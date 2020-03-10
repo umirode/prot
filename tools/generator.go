@@ -55,7 +55,7 @@ func (g *Generator) GenerateProto(moduleDir string, lang string) ([]string, erro
 		return nil, errors.New("lang " + lang + " not exists")
 	}
 
-	cmd := exec.Command("protoc", JoinPathAndFileName("*.proto", moduleDir), supportLang.ProtocArg)
+	cmd := exec.Command("protoc", supportLang.ProtocArg, JoinPathAndFileName("*.proto", moduleDir))
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
 	err := cmd.Run()

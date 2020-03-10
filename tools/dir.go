@@ -3,6 +3,8 @@ package tools
 import (
 	"os"
 	"path"
+	"path/filepath"
+	"regexp"
 )
 
 func CreateDirRecursive(dir string) error {
@@ -21,6 +23,25 @@ func CleanDir(dir string) error {
 	}
 
 	return nil
+}
+
+func FindFilesInDirByExt(dir string, ext string) ([]string, error) {
+	var files []string
+
+	err := filepath.Walk(dir, func(path string, f os.FileInfo, _ error) error {
+		if !f.IsDir() {
+			r, err := regexp.MatchString(ext, f.Name())
+			if err == nil && r {
+				files = append(files, path)
+			}
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return files, nil
 }
 
 func JoinPathAndFileName(file string, paths ...string) string {
