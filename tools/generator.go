@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -69,7 +70,7 @@ func (g *Generator) GenerateProto(moduleDir string, lang string) ([]string, erro
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
 
-	fmt.Println(cmd.String())
+	logrus.Debug("protoc generation command: " + cmd.String())
 
 	err = cmd.Run()
 	if err != nil {
