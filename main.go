@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/sirupsen/logrus"
 	"github.com/umirode/prot/cmd"
 	"github.com/urfave/cli/v2"
@@ -9,7 +8,6 @@ import (
 )
 
 func main() {
-	fmt.Println("test")
 	app := &cli.App{
 		Commands: []*cli.Command{
 			cmd.InstallCmd,
@@ -21,6 +19,4 @@ func main() {
 	if err != nil {
 		logrus.Fatal(err)
 	}
-
-	os.Exit(0)
 }

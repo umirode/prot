@@ -66,13 +66,14 @@ func (g *Generator) GenerateProto(modulePath string, lang string) ([]string, err
 
 	err := cmd.Run()
 	if err != nil {
+
+		//TODO: Debug
+		fmt.Println("Result: " + out.String())
+		fmt.Println("Result: " + stderr.String())
+		//TODO: Debug
+
 		return nil, err
 	}
-
-	//TODO: Debug
-	fmt.Println("Result: " + out.String())
-	fmt.Println("Result: " + stderr.String())
-	//TODO: Debug
 
 	return g.findFilesInDirByExt(modulePath, supportLang.ProtocOutputExt), nil
 }
