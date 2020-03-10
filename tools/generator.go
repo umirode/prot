@@ -5,10 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/sirupsen/logrus"
-	"os"
 	"os/exec"
-	"path/filepath"
-	"regexp"
 )
 
 type Generator struct {
@@ -30,22 +27,6 @@ func generatorGetSupportLanguagesMap() map[string]generatorLangArgs {
 			ProtocOutputExt: ".pb.go",
 		},
 	}
-}
-
-func (*Generator) findFilesInDirByExt(dir string, ext string) []string {
-	var files []string
-
-	filepath.Walk(dir, func(path string, f os.FileInfo, _ error) error {
-		if !f.IsDir() {
-			r, err := regexp.MatchString(ext, f.Name())
-			if err == nil && r {
-				files = append(files, path)
-			}
-		}
-		return nil
-	})
-
-	return files
 }
 
 func (g *Generator) GenerateProto(moduleDir string, lang string) ([]string, error) {
@@ -77,5 +58,5 @@ func (g *Generator) GenerateProto(moduleDir string, lang string) ([]string, erro
 		return nil, fmt.Errorf("%v %v", err, stderr.String())
 	}
 
-	return g.findFilesInDirByExt(moduleDir, supportLang.ProtocOutputExt), nil
+	return FindFilesInDirByExt(moduleDir, supportLang.ProtocOutputExt)
 }

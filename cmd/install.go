@@ -33,7 +33,6 @@ var InstallCmd = &cli.Command{
 		},
 	},
 	Action: func(context *cli.Context) error {
-
 		currentDir, err := os.Getwd()
 		if err != nil {
 			return err
@@ -93,6 +92,7 @@ var InstallCmd = &cli.Command{
 
 				files, err := generator.GenerateProto(moduleDir, filledConfig.Lang)
 				if err != nil {
+					_ = tools.CleanDir(moduleDir)
 					logrus.Error("generating proto files error: ", err)
 					return
 				}
