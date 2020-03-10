@@ -7,7 +7,9 @@ import (
 	"github.com/umirode/prot/tools"
 	"github.com/urfave/cli/v2"
 	"gopkg.in/src-d/go-git.v4/plumbing/transport/ssh"
+	"os"
 	"path"
+	"path/filepath"
 	"strings"
 	"sync"
 )
@@ -31,16 +33,27 @@ var InstallCmd = &cli.Command{
 		},
 	},
 	Action: func(context *cli.Context) error {
-		configFlag := path.Clean(context.String("config"))
-		outputFlag := path.Clean(context.String("output"))
 
-		outputDir := tools.JoinPathAndFileName("", outputFlag, "prot_vendor")
-		err := tools.CreateDirRecursive(outputDir)
+		currentDir, err := os.Getwd()
 		if err != nil {
 			return err
 		}
 
-		filledConfig, err := config.NewConfig(configFlag)
+		outputDir := path.Clean(context.String("output"))
+		if !filepath.IsAbs(outputDir) {
+			outputDir = tools.JoinPathAndFileName("", currentDir, outputDir, "prot_vendor")
+		}
+		err = tools.CreateDirRecursive(outputDir)
+		if err != nil {
+			return err
+		}
+
+		configPath := path.Clean(context.String("config"))
+		if !filepath.IsAbs(configPath) {
+			configPath = tools.JoinPathAndFileName(configPath, currentDir)
+		}
+
+		filledConfig, err := config.NewConfig(configPath)
 		if err != nil {
 			return err
 		}
