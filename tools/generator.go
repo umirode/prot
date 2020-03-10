@@ -55,13 +55,23 @@ func (g *Generator) GenerateProto(moduleDir string, lang string) ([]string, erro
 		return nil, errors.New("lang " + lang + " not exists")
 	}
 
-	cmd := exec.Command("protoc", supportLang.ProtocOutArg+moduleDir, "-I"+moduleDir, JoinPathAndFileName("*.proto", moduleDir))
+	protoFiles, err := FindFilesInDirByExt(moduleDir, ".proto")
+	if err != nil {
+		return nil, err
+	}
+
+	if len(protoFiles) == 0 {
+		return nil, errors.New(".proto files not found in " + moduleDir + " directory")
+	}
+
+	cmd := exec.Command("protoc", supportLang.ProtocOutArg+moduleDir, "-I"+moduleDir)
+	cmd.Args = append(cmd.Args, protoFiles...)
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
 
 	fmt.Println(cmd.String())
 
-	err := cmd.Run()
+	err = cmd.Run()
 	if err != nil {
 		return nil, fmt.Errorf("%v %v", err, stderr.String())
 	}

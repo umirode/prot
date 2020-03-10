@@ -79,6 +79,12 @@ var InstallCmd = &cli.Command{
 				}
 
 				moduleDir := tools.JoinPathAndFileName("", outputDir, strings.ToLower(name))
+				err := tools.CleanDir(moduleDir)
+				if err != nil {
+					logrus.Error("Module directory cleaning error: ", err)
+					return
+				}
+
 				err = cloner.Clone(moduleDir, module.Repository, authMethod)
 				if err != nil {
 					logrus.Error("Creating module directory error: ", err)
