@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -67,7 +66,6 @@ func (g *Generator) GenerateProto(modulePath string, lang string) ([]string, err
 
 	err := cmd.Run()
 	if err != nil {
-		log.Fatal(err)
 		return nil, err
 	}
 

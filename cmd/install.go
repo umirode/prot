@@ -65,19 +65,19 @@ var InstallCmd = &cli.Command{
 					var err error
 					authMethod, err = git.GetAuthMethod((*module.Auth).Type, (*module.Auth).Config)
 					if err != nil {
-						logrus.Error(err)
+						logrus.Error("Creating auth method error: ", err)
 					}
 				}
 
 				outputModuleDirectory := vendorDir + strings.ToLower(name) + "/"
 				err = cloner.Clone(outputModuleDirectory, module.Repository, authMethod)
 				if err != nil {
-					logrus.Error(err)
+					logrus.Error("Creating module directory error: ", err)
 				}
 
 				files, err := generator.GenerateProto(outputModuleDirectory, filledConfig.Lang)
 				if err != nil {
-					logrus.Error(err)
+					logrus.Error("Generating proto files error: ", err)
 				}
 
 				_ = files
