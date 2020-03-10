@@ -5,6 +5,7 @@ import (
 	"github.com/umirode/prot/tools"
 	"github.com/urfave/cli/v2"
 	"io/ioutil"
+	"path"
 )
 
 var InitCmd = &cli.Command{
@@ -19,14 +20,11 @@ var InitCmd = &cli.Command{
 		},
 	},
 	Action: func(context *cli.Context) error {
-		outputPath, err := tools.CreateDirAndFormatPath(context.String("output"), false)
+		outputFlag := path.Clean(context.String("output"))
+
+		err := tools.CreateDirRecursive(outputFlag)
 		if err != nil {
 			return err
-		}
-
-		protConfigPath := "prot.yaml"
-		if outputPath != "" {
-			protConfigPath = outputPath + protConfigPath
 		}
 
 		template, err := config.GetConfigTemplate()
@@ -34,7 +32,7 @@ var InitCmd = &cli.Command{
 			return err
 		}
 
-		err = ioutil.WriteFile("prot.yaml", []byte(template), 0644)
+		err = ioutil.WriteFile(tools.JoinPathAndFileName("prot.yaml", outputFlag), []byte(template), 0644)
 		if err != nil {
 			return err
 		}

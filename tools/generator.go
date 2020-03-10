@@ -47,7 +47,7 @@ func (*Generator) findFilesInDirByExt(dir string, ext string) []string {
 	return files
 }
 
-func (g *Generator) GenerateProto(modulePath string, lang string) ([]string, error) {
+func (g *Generator) GenerateProto(moduleDir string, lang string) ([]string, error) {
 	supportLanguagesMap := generatorGetSupportLanguagesMap()
 
 	supportLang, ok := supportLanguagesMap[lang]
@@ -55,7 +55,7 @@ func (g *Generator) GenerateProto(modulePath string, lang string) ([]string, err
 		return nil, errors.New("lang " + lang + " not exists")
 	}
 
-	cmd := exec.Command("protoc", modulePath+"*.proto", supportLang.ProtocArg, "--proto_path=.")
+	cmd := exec.Command("protoc", JoinPathAndFileName("*.proto", moduleDir), supportLang.ProtocArg)
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
 	err := cmd.Run()
@@ -63,5 +63,5 @@ func (g *Generator) GenerateProto(modulePath string, lang string) ([]string, err
 		return nil, fmt.Errorf("%v %v", err, stderr.String())
 	}
 
-	return g.findFilesInDirByExt(modulePath, supportLang.ProtocOutputExt), nil
+	return g.findFilesInDirByExt(moduleDir, supportLang.ProtocOutputExt), nil
 }

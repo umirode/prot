@@ -7,6 +7,7 @@ import (
 	"github.com/umirode/prot/tools"
 	"github.com/urfave/cli/v2"
 	"gopkg.in/src-d/go-git.v4/plumbing/transport/ssh"
+	"path"
 	"strings"
 	"sync"
 )
@@ -30,28 +31,22 @@ var InstallCmd = &cli.Command{
 		},
 	},
 	Action: func(context *cli.Context) error {
-		filledConfig, err := config.NewConfig(context.String("config"))
+		configFlag := path.Clean(context.String("config"))
+		outputFlag := path.Clean(context.String("output"))
+
+		outputDir := tools.JoinPathAndFileName("", outputFlag, "prot_vendor")
+		err := tools.CreateDirRecursive(outputDir)
+		if err != nil {
+			return err
+		}
+
+		filledConfig, err := config.NewConfig(configFlag)
 		if err != nil {
 			return err
 		}
 
 		generator := tools.NewGenerator()
 		cloner := git.NewCloner()
-
-		outputPath, err := tools.CreateDirAndFormatPath(context.String("output"), false)
-		if err != nil {
-			return err
-		}
-
-		vendorDirPath := "prot_vendor"
-		if outputPath != "" {
-			vendorDirPath = outputPath + vendorDirPath
-		}
-
-		vendorDir, err := tools.CreateDirAndFormatPath(vendorDirPath, true)
-		if err != nil {
-			return err
-		}
 
 		wg := sync.WaitGroup{}
 
@@ -69,13 +64,13 @@ var InstallCmd = &cli.Command{
 					}
 				}
 
-				outputModuleDirectory := vendorDir + strings.ToLower(name) + "/"
-				err = cloner.Clone(outputModuleDirectory, module.Repository, authMethod)
+				moduleDir := tools.JoinPathAndFileName("", outputDir, strings.ToLower(name))
+				err = cloner.Clone(moduleDir, module.Repository, authMethod)
 				if err != nil {
 					logrus.Error("Creating module directory error: ", err)
 				}
 
-				files, err := generator.GenerateProto(outputModuleDirectory, filledConfig.Lang)
+				files, err := generator.GenerateProto(moduleDir, filledConfig.Lang)
 				if err != nil {
 					logrus.Error("Generating proto files error: ", err)
 				}
