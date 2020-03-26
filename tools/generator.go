@@ -17,18 +17,25 @@ func NewGenerator() *Generator {
 
 type generatorLangArgs struct {
 	ProtocOutArg    string
-	ProtocOutputExt string
+	ProtocOutputExt []string
 }
 
 func generatorGetSupportLanguagesMap() map[string]generatorLangArgs {
 	return map[string]generatorLangArgs{
 		"go": {
-			ProtocOutArg:    "--go_out=plugins=grpc:",
-			ProtocOutputExt: ".pb.go",
+			ProtocOutArg: "--go_out=plugins=grpc:",
+			ProtocOutputExt: []string{
+				".pb.go",
+			},
 		},
 		"dart": {
-			ProtocOutArg:    "--dart_out=plugins=grpc:",
-			ProtocOutputExt: ".pb.go",
+			ProtocOutArg: "--dart_out=plugins=grpc:",
+			ProtocOutputExt: []string{
+				".pb.dart",
+				".pbenum.dart",
+				".pbgrpc.dart",
+				".pbjson.dart",
+			},
 		},
 	}
 }
@@ -62,5 +69,16 @@ func (g *Generator) GenerateProto(moduleDir string, lang string) ([]string, erro
 		return nil, fmt.Errorf("%v %v", err, stderr.String())
 	}
 
-	return FindFilesInDirByExt(moduleDir, supportLang.ProtocOutputExt)
+	var generatedFiles []string
+
+	for _, ext := range supportLang.ProtocOutputExt {
+		generatedFilesByExt, err := FindFilesInDirByExt(moduleDir, ext)
+		if err != nil {
+			return nil, fmt.Errorf("finding generated proto files error: %v", err)
+		}
+
+		generatedFiles = append(generatedFiles, generatedFilesByExt...)
+	}
+
+	return generatedFiles, nil
 }
