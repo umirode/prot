@@ -29,7 +29,7 @@ func generatorGetSupportLanguagesMap() map[string]generatorLangArgs {
 			},
 		},
 		"dart": {
-			ProtocOutArg: "--dart_out=plugins=grpc:",
+			ProtocOutArg: "--dart_out=grpc:",
 			ProtocOutputExt: []string{
 				".pb.dart",
 				".pbenum.dart",
