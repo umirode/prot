@@ -10,7 +10,8 @@
       "$id": "#/properties/Lang",
       "type": "string",
       "enum": [
-        "go"
+        "go",
+        "dart"
       ]
     },
     "Modules": {
