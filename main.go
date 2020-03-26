@@ -9,6 +9,7 @@ import (
 
 func main() {
 	app := &cli.App{
+		Usage: "Protobuf files manager",
 		Commands: []*cli.Command{
 			cmd.InstallCmd,
 			cmd.InitCmd,
