@@ -2,7 +2,7 @@ package git
 
 import (
 	"gopkg.in/src-d/go-git.v4"
-	"gopkg.in/src-d/go-git.v4/plumbing/transport/ssh"
+	"gopkg.in/src-d/go-git.v4/plumbing/transport"
 	"os"
 )
 
@@ -13,7 +13,7 @@ func NewCloner() *Cloner {
 	return &Cloner{}
 }
 
-func (*Cloner) Clone(outputPath string, moduleUrl string, auth ssh.AuthMethod) error {
+func (*Cloner) Clone(outputPath string, moduleUrl string, auth transport.AuthMethod) error {
 	cloneOptions := &git.CloneOptions{
 		URL:      moduleUrl,
 		Progress: os.Stdout,

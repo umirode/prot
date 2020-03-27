@@ -45,7 +45,9 @@
                   "$id": "#/properties/Modules/^[a-z_][a-z_]*$/Auth/Config",
                   "type": "string",
                   "enum": [
-                    "PublicKeys"
+                    "PublicKeys",
+                    "Password",
+                    "BasicAuth"
                   ]
                 }
               },
@@ -81,6 +83,64 @@
                           "IgnoreHostKey": {
                             "$id": "#/properties/Modules/^[a-z_][a-z_]*$/Auth/Config/IgnoreHostKey",
                             "type": "boolean"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "Type": {
+                        "const": "Password"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "Config": {
+                        "required": [
+                          "User",
+                          "Password"
+                        ],
+                        "properties": {
+                          "User": {
+                            "$id": "#/properties/Modules/^[a-z_][a-z_]*$/Auth/Config/User",
+                            "type": "string"
+                          },
+                          "Password": {
+                            "$id": "#/properties/Modules/^[a-z_][a-z_]*$/Auth/Config/Password",
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "Type": {
+                        "const": "BasicAuth"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "Config": {
+                        "required": [
+                          "Username",
+                          "Password"
+                        ],
+                        "properties": {
+                          "Username": {
+                            "$id": "#/properties/Modules/^[a-z_][a-z_]*$/Auth/Config/Username",
+                            "type": "string"
+                          },
+                          "Password": {
+                            "$id": "#/properties/Modules/^[a-z_][a-z_]*$/Auth/Config/Password",
+                            "type": "string"
                           }
                         }
                       }

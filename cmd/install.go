@@ -6,7 +6,7 @@ import (
 	"github.com/umirode/prot/git"
 	"github.com/umirode/prot/tools"
 	"github.com/urfave/cli/v2"
-	"gopkg.in/src-d/go-git.v4/plumbing/transport/ssh"
+	"gopkg.in/src-d/go-git.v4/plumbing/transport"
 	"os"
 	"path"
 	"path/filepath"
@@ -67,7 +67,7 @@ var InstallCmd = &cli.Command{
 			go func() {
 				defer wg.Done()
 
-				var authMethod ssh.AuthMethod
+				var authMethod transport.AuthMethod
 				if module.Auth != nil {
 					var err error
 					authMethod, err = git.GetAuthMethod((*module.Auth).Type, (*module.Auth).Config)
