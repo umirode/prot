@@ -47,7 +47,8 @@
                   "enum": [
                     "PublicKeys",
                     "Password",
-                    "BasicAuth"
+                    "BasicAuth",
+                    "Token"
                   ]
                 }
               },
@@ -140,6 +141,30 @@
                           },
                           "Password": {
                             "$id": "#/properties/Modules/^[a-z_][a-z_]*$/Auth/Config/Password",
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "Type": {
+                        "const": "Token"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "Config": {
+                        "required": [
+                          "Token"
+                        ],
+                        "properties": {
+                          "Token": {
+                            "$id": "#/properties/Modules/^[a-z_][a-z_]*$/Auth/Config/Token",
                             "type": "string"
                           }
                         }

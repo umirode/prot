@@ -30,6 +30,7 @@ func authMethodGetAuthMethodMap() map[string]authMethod {
 		"PublicKeys": newAuthPublicKeys(),
 		"Password":   newAuthPassword(),
 		"BasicAuth":  newAuthBasicAuth(),
+		"Token":      newAuthToken(),
 	}
 }
 
@@ -142,5 +143,29 @@ func (a *authBasicAuth) Create(config map[string]string) (transport.AuthMethod, 
 	return &http.BasicAuth{
 		Username: authConfig.Username,
 		Password: authConfig.Password,
+	}, nil
+}
+
+type authToken struct {
+}
+
+func newAuthToken() *authToken {
+	return &authToken{}
+}
+
+func (a *authToken) Create(config map[string]string) (transport.AuthMethod, error) {
+	authConfig := struct {
+		Token string
+	}{}
+
+	var ok bool
+
+	authConfig.Token, ok = config["Token"]
+	if !ok {
+		return nil, errors.New("parameter Token required for auth type Token")
+	}
+
+	return &http.TokenAuth{
+		Token: authConfig.Token,
 	}, nil
 }
