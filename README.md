@@ -2,14 +2,14 @@
 
 It application can help your manage protobuf files and generate code based on him.
 
-##Commands
-### `prot help` - Shows a list of commands or help for one command
+#Commands
+`prot help` - Shows a list of commands or help for one command
 
-### `prot init` - Generate config for Prot application
+`prot init` - Generate config for Prot application
 Options:
 * `--output` Output path for config (default: current directory)
 
-### `prot install` - Install dependencies from prot.yml config
+`prot install` - Install dependencies from prot.yml config
 Options:
 * `--config` Path to configuration file (default: prot.yaml)
 * `--output` Output path (default: current directory)
