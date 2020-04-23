@@ -4,7 +4,8 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/umirode/prot/config"
 	"github.com/umirode/prot/git"
-	"github.com/umirode/prot/tools"
+	"github.com/umirode/prot/helpers"
+	"github.com/umirode/prot/protobuf"
 	"github.com/urfave/cli/v2"
 	"gopkg.in/src-d/go-git.v4/plumbing/transport"
 	"os"
@@ -16,19 +17,19 @@ import (
 
 var InstallCmd = &cli.Command{
 	Name:  "install",
-	Usage: "Install proto dependencies from config file ",
+	Usage: "Install dependencies from config file",
 	Flags: []cli.Flag{
 		&cli.StringFlag{
 			Name:        "config",
 			Value:       "prot.yaml",
 			Aliases:     []string{"c"},
-			Usage:       "Load configuration from `FILE`",
+			Usage:       "Path to configuration file",
 			DefaultText: "prot.yaml",
 		},
 		&cli.StringFlag{
 			Name:        "output",
 			Aliases:     []string{"o"},
-			Usage:       "Output path `PATH`",
+			Usage:       "Output path",
 			DefaultText: "current directory",
 		},
 	},
@@ -40,16 +41,16 @@ var InstallCmd = &cli.Command{
 
 		outputDir := path.Clean(context.String("output"))
 		if !filepath.IsAbs(outputDir) {
-			outputDir = tools.JoinPathAndFileName("", currentDir, outputDir, "prot_vendor")
+			outputDir = helpers.JoinPathAndFileName("", currentDir, outputDir, "prot_vendor")
 		}
-		err = tools.CreateDirRecursive(outputDir)
+		err = helpers.CreateDirRecursive(outputDir)
 		if err != nil {
 			return err
 		}
 
 		configPath := path.Clean(context.String("config"))
 		if !filepath.IsAbs(configPath) {
-			configPath = tools.JoinPathAndFileName(configPath, currentDir)
+			configPath = helpers.JoinPathAndFileName(configPath, currentDir)
 		}
 
 		filledConfig, err := config.NewConfig(configPath)
@@ -57,7 +58,7 @@ var InstallCmd = &cli.Command{
 			return err
 		}
 
-		generator := tools.NewGenerator()
+		generator := protobuf.NewGenerator()
 		cloner := git.NewCloner()
 
 		wg := sync.WaitGroup{}
@@ -69,16 +70,23 @@ var InstallCmd = &cli.Command{
 
 				var authMethod transport.AuthMethod
 				if module.Auth != nil {
+					authConfig := (*module.Auth).Config
+
 					var err error
-					authMethod, err = git.GetAuthMethod((*module.Auth).Type, (*module.Auth).Config)
+					authMethod, err = git.NewAuthMethodFactory(map[string]git.AuthMethod{
+						"PublicKeys": git.NewAuthPublicKeys(authConfig),
+						"Password":   git.NewAuthPassword(authConfig),
+						"BasicAuth":  git.NewAuthBasicAuth(authConfig),
+						"Token":      git.NewAuthToken(authConfig),
+					}).GetAuthMethod((*module.Auth).Type)
 					if err != nil {
 						logrus.Error("creating auth method error: ", err)
 						return
 					}
 				}
 
-				moduleDir := tools.JoinPathAndFileName("", outputDir, strings.ToLower(name))
-				err := tools.CleanDir(moduleDir)
+				moduleDir := helpers.JoinPathAndFileName("", outputDir, strings.ToLower(name))
+				err := helpers.CleanDir(moduleDir)
 				if err != nil {
 					logrus.Error("module directory cleaning error: ", err)
 					return
@@ -92,7 +100,7 @@ var InstallCmd = &cli.Command{
 
 				files, err := generator.GenerateProto(moduleDir, filledConfig.Lang)
 				if err != nil {
-					_ = tools.CleanDir(moduleDir)
+					_ = helpers.CleanDir(moduleDir)
 					logrus.Error("generating proto files error: ", err)
 					return
 				}

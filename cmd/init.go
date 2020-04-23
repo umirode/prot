@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"github.com/umirode/prot/config"
-	"github.com/umirode/prot/tools"
+	"github.com/umirode/prot/helpers"
 	"github.com/urfave/cli/v2"
 	"io/ioutil"
 	"os"
@@ -12,12 +12,12 @@ import (
 
 var InitCmd = &cli.Command{
 	Name:  "init",
-	Usage: "Generate prot.yml config in current directory",
+	Usage: "Generate config for Prot application",
 	Flags: []cli.Flag{
 		&cli.StringFlag{
 			Name:        "output",
 			Aliases:     []string{"o"},
-			Usage:       "Output path `PATH`",
+			Usage:       "Output path for config",
 			DefaultText: "current directory",
 		},
 	},
@@ -29,9 +29,9 @@ var InitCmd = &cli.Command{
 
 		outputDir := path.Clean(context.String("output"))
 		if !filepath.IsAbs(outputDir) {
-			outputDir = tools.JoinPathAndFileName("", currentDir, outputDir)
+			outputDir = helpers.JoinPathAndFileName("", currentDir, outputDir)
 		}
-		err = tools.CreateDirRecursive(outputDir)
+		err = helpers.CreateDirRecursive(outputDir)
 		if err != nil {
 			return err
 		}
@@ -41,7 +41,7 @@ var InitCmd = &cli.Command{
 			return err
 		}
 
-		err = ioutil.WriteFile(tools.JoinPathAndFileName("prot.yaml", outputDir), []byte(template), 0644)
+		err = ioutil.WriteFile(helpers.JoinPathAndFileName("prot.yaml", outputDir), []byte(template), 0644)
 		if err != nil {
 			return err
 		}

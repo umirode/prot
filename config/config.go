@@ -2,7 +2,6 @@ package config
 
 import (
 	"bytes"
-	"github.com/umirode/prot/tools"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 )
@@ -32,7 +31,7 @@ func NewConfig(filePath string) (*Config, error) {
 		return nil, err
 	}
 
-	err = tools.ValidateYaml(configFileData, bytes.NewReader(schemaJsonAsset.bytes))
+	err = ValidateYaml(configFileData, bytes.NewReader(schemaJsonAsset.bytes))
 	if err != nil {
 		return nil, err
 	}

@@ -1,10 +1,10 @@
-package tools
+package protobuf
 
 import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/sirupsen/logrus"
+	"github.com/umirode/prot/helpers"
 	"os/exec"
 )
 
@@ -48,7 +48,7 @@ func (g *Generator) GenerateProto(moduleDir string, lang string) ([]string, erro
 		return nil, errors.New("lang " + lang + " not exists")
 	}
 
-	protoFiles, err := FindFilesInDirByExt(moduleDir, ".proto")
+	protoFiles, err := helpers.FindFilesInDirByExt(moduleDir, ".proto")
 	if err != nil {
 		return nil, err
 	}
@@ -62,8 +62,6 @@ func (g *Generator) GenerateProto(moduleDir string, lang string) ([]string, erro
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
 
-	logrus.Debug("protoc generation command: " + cmd.String())
-
 	err = cmd.Run()
 	if err != nil {
 		return nil, fmt.Errorf("%v %v", err, stderr.String())
@@ -72,7 +70,7 @@ func (g *Generator) GenerateProto(moduleDir string, lang string) ([]string, erro
 	var generatedFiles []string
 
 	for _, ext := range supportLang.ProtocOutputExt {
-		generatedFilesByExt, err := FindFilesInDirByExt(moduleDir, ext)
+		generatedFilesByExt, err := helpers.FindFilesInDirByExt(moduleDir, ext)
 		if err != nil {
 			return nil, fmt.Errorf("finding generated proto files error: %v", err)
 		}

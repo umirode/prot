@@ -1,4 +1,4 @@
-package tools
+package config
 
 import (
 	"fmt"
@@ -9,19 +9,17 @@ import (
 )
 
 func ValidateYaml(yamlData []byte, jsonSchema io.Reader) error {
-	validator := newYamlValidator()
-
-	return validator.ValidateYaml(yamlData, jsonSchema)
+	return NewYamlValidator().ValidateYaml(yamlData, jsonSchema)
 }
 
-type yamlValidator struct {
+type YamlValidator struct {
 }
 
-func newYamlValidator() *yamlValidator {
-	return &yamlValidator{}
+func NewYamlValidator() *YamlValidator {
+	return &YamlValidator{}
 }
 
-func (y *yamlValidator) formatInvalidKeyError(keyPrefix string, key interface{}) error {
+func (y *YamlValidator) formatInvalidKeyError(keyPrefix string, key interface{}) error {
 	var location string
 	if keyPrefix == "" {
 		location = "at top level"
@@ -31,7 +29,7 @@ func (y *yamlValidator) formatInvalidKeyError(keyPrefix string, key interface{})
 	return errors.Errorf("Non-string key %s: %#v", location, key)
 }
 
-func (y *yamlValidator) convertToStringKeysRecursive(value interface{}, keyPrefix string) (interface{}, error) {
+func (y *YamlValidator) convertToStringKeysRecursive(value interface{}, keyPrefix string) (interface{}, error) {
 	if mapping, ok := value.(map[interface{}]interface{}); ok {
 		dict := make(map[string]interface{})
 		for key, entry := range mapping {
@@ -68,7 +66,7 @@ func (y *yamlValidator) convertToStringKeysRecursive(value interface{}, keyPrefi
 	return value, nil
 }
 
-func (y *yamlValidator) ValidateYaml(yamlData []byte, jsonSchema io.Reader) error {
+func (y *YamlValidator) ValidateYaml(yamlData []byte, jsonSchema io.Reader) error {
 	var configText interface{}
 	err := yaml.Unmarshal(yamlData, &configText)
 	if err != nil {
@@ -84,6 +82,7 @@ func (y *yamlValidator) ValidateYaml(yamlData []byte, jsonSchema io.Reader) erro
 	if err := compiler.AddResource("schema.json", jsonSchema); err != nil {
 		return err
 	}
+
 	schema, err := compiler.Compile("schema.json")
 	if err != nil {
 		return err
