@@ -9,7 +9,8 @@ import (
 
 func main() {
 	app := &cli.App{
-		Usage: "protobuf files manager",
+		Usage:   "protobuf files manager",
+		Version: "1.0.0",
 		Commands: []*cli.Command{
 			cmd.InstallCmd,
 			cmd.InitCmd,
