@@ -2,7 +2,7 @@
 
 It application can help your manage protobuf files and generate code based on him.
 
-##Commands
+## Commands
 
 ### `prot help` - Shows a list of commands or help for one command
 
