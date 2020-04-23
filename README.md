@@ -2,19 +2,20 @@
 
 It application can help your manage protobuf files and generate code based on him.
 
-#Commands
-`prot help` - Shows a list of commands or help for one command
+##Commands
 
-`prot init` - Generate config for Prot application
+### `prot help` - Shows a list of commands or help for one command
+
+### `prot init` - Generate config for Prot application
 Options:
 * `--output` Output path for config (default: current directory)
 
-`prot install` - Install dependencies from prot.yml config
+### `prot install` - Install dependencies from prot.yml config
 Options:
 * `--config` Path to configuration file (default: prot.yaml)
 * `--output` Output path (default: current directory)
 
-##Configuration
+## Configuration
 `Lang` - now it`s `go` or `dart`. If yor want more - Welcome to the issue! :).
 
 `ModuleName` or `ModuleNameWithAuth` - name for module.
@@ -38,9 +39,9 @@ Modules:
 
 ```
 
-##Auth Configuration
+## Auth Configuration
 
-###PublicKeys - represent ssh auth via public keys (type ssh).
+### PublicKeys - represent ssh auth via public keys (type ssh).
 ```
 Auth:
     Type: PublicKeys
@@ -51,7 +52,7 @@ Auth:
       IgnoreHostKey: true # OPTIONAL DEFAULTS false
 ```
 
-###Password - represent ssh auth via password (type ssh).
+### Password - represent ssh auth via password (type ssh).
 ```
 Auth:
     Type: Password
@@ -60,7 +61,7 @@ Auth:
       Password: pass
 ```
 
-###BasicAuth - represent a HTTP basic auth (type https).
+### BasicAuth - represent a HTTP basic auth (type https).
 ```
 Auth:
     Type: BasicAuth
@@ -69,7 +70,7 @@ Auth:
       Password: pass
 ```
 
-###Token - represent authenticate with HTTP token authentication (also known as bearer authentication) (type https).
+### Token - represent authenticate with HTTP token authentication (also known as bearer authentication) (type https).
 
 IMPORTANT: If you are looking to use OAuth tokens with popular servers (e.g.
 GitHub, Bitbucket, GitLab) you should use BasicAuth instead. These servers
