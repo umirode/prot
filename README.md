@@ -2,6 +2,10 @@
 
 It application can help your manage protobuf files and generate code based on him.
 
+## Install
+
+`go get -u github.com/umirode/prot`
+
 ## Commands
 
 ### `prot help` - Shows a list of commands or help for one command
