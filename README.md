@@ -39,6 +39,7 @@ Modules:
 ```
 
 ##Auth Configuration
+
 ###PublicKeys - represent ssh auth via public keys (type ssh).
 ```
 Auth:
