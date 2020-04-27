@@ -20,7 +20,7 @@ Options:
 * `--output` Output path (default: current directory)
 
 ## Configuration
-`Lang` - now it`s `go` or `dart`. If yor want more - Welcome to the issue! :).
+`Lang` - now it's `go` or `dart`. If yor want more - Welcome to the issue! :).
 
 `ModuleName` or `ModuleNameWithAuth` - name for module.
 
