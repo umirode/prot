@@ -2,6 +2,8 @@
 
 It application can help your manage protobuf files and generate code based on him.
 
+!!! Before use prot you must install your lang dependencies (section Config/Lang).
+
 1. Create repository for service protobuf files.
 2. Run `prot init` command config in your server application.
 3. Add your repository with protobuf files into prot.yml and run `prot install` command.
@@ -81,7 +83,12 @@ OPTIONS:
 ```
 
 ## Configuration
-`Lang` - now it's `go` or `dart`. If yor want more - Welcome to the issue! :).
+`Lang` If yor want more - welcome to the issue! :)
+
+|  Lang  | Info |
+| ------ | ---- |
+| go     | Follow https://grpc.io/docs/quickstart/go/ section Protocol Buffers      |
+| dart   | Follow https://grpc.io/docs/quickstart/dart/ section Protocol Buffers v3 |
 
 `ModuleName` or `ModuleNameWithAuth` - name for module.
 
