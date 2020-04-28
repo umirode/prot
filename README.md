@@ -115,7 +115,7 @@ Modules:
 
 ## Auth Configuration
 
-### PublicKeys - represent ssh auth via public keys (type ssh).
+`PublicKeys` - represent ssh auth via public keys (type ssh).
 ```
 Auth:
     Type: PublicKeys
@@ -126,7 +126,9 @@ Auth:
       IgnoreHostKey: true # OPTIONAL DEFAULTS false
 ```
 
-### Password - represent ssh auth via password (type ssh).
+------
+
+`Password` - represent ssh auth via password (type ssh).
 ```
 Auth:
     Type: Password
@@ -135,7 +137,9 @@ Auth:
       Password: pass
 ```
 
-### BasicAuth - represent a HTTP basic auth (type https).
+------
+
+`BasicAuth` - represent a HTTP basic auth (type https).
 ```
 Auth:
     Type: BasicAuth
@@ -144,7 +148,9 @@ Auth:
       Password: pass
 ```
 
-### Token - represent authenticate with HTTP token authentication (also known as bearer authentication) (type https).
+------
+
+`Token` - represent authenticate with HTTP token authentication (also known as bearer authentication) (type https).
 
 IMPORTANT: If you are looking to use OAuth tokens with popular servers (e.g.
 GitHub, Bitbucket, GitLab) you should use BasicAuth instead. These servers
