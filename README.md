@@ -40,6 +40,8 @@ GLOBAL OPTIONS:
    --version, -v  print the version (default: false)
 ```
 
+------
+
 `prot init` - Generate config for Prot application
 Options:
 * `--output` Output path for config (default: current directory)
@@ -61,6 +63,8 @@ OPTIONS:
 Options:
 * `--config` Path to configuration file (default: prot.yaml)
 * `--output` Output path (default: current directory)
+
+------
 
 ```
 ❯ prot install --help                                                                                                          
