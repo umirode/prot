@@ -4,6 +4,8 @@ It application can help your manage protobuf files and generate code based on hi
 
 !!! Before use prot you must install your lang dependencies (section Config/Lang).
 
+## How to use
+
 1. Create repository for service protobuf files.
 2. Run `prot init` command config in your server application.
 3. Add your repository with protobuf files into prot.yml and run `prot install` command.
