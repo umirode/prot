@@ -2,7 +2,7 @@
 
 It application can help your manage protobuf files and generate code based on him.
 
-!!! Before use prot you must install your lang dependencies (section Config/Lang).
+!!! Before use Prot you must install your lang dependencies (section Config/Lang).
 
 ## How to use
 
