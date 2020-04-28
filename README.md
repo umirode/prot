@@ -63,12 +63,12 @@ OPTIONS:
    --help, -h                show help (default: false)
 ```
 
+------
+
 `prot install` - Install dependencies from prot.yml config
 Options:
 * `--config` Path to configuration file (default: prot.yaml)
 * `--output` Output path (default: current directory)
-
-------
 
 ```
 ❯ prot install --help                                                                                                          
