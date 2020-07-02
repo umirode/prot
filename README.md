@@ -7,13 +7,13 @@ It application can help your manage protobuf files and generate code based on hi
 ## How to use
 
 1. Create repository for service protobuf files.
-2. Run `prot init` command config in your server application.
+2. Run `prot init` command in your server application.
 3. Add your repository with protobuf files into prot.yml and run `prot install` command.
 4. Write code for server.
-5. Run `prot init` command config in your server application.
+5. Run `prot init` command in your client application.
 6. Add your repository with protobuf files into prot.yml and run `prot install` command.
-7. Use generated grpc client in your client service.
-8. Now after update protobuf files you can update generated code for grpc server and client by one command - `prot install`
+7. Use generated grpc client in your client application.
+8. Now after update protobuf files you can update generated code for grpc server and client by one command - `prot install`.
 
 ## Install
 
